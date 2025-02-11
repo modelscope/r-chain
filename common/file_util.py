@@ -1,12 +1,14 @@
 import os
+
 import jsonlines as jsonl
 
 
 def jsonl_to_list(jsonl_file, feature: str = None):
     res_list = []
     with jsonl.open(jsonl_file, mode='r') as reader:
-        for line in reader.iter(type=dict, allow_none=True, skip_invalid=False):
-            if feature:
+        for line in reader.iter(type=dict, allow_none=True,
+                                skip_invalid=False):
+            if feature and 'source' in line:
                 if feature == line['source']:
                     res_list.append(line)
                 else:

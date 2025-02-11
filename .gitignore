@@ -25,6 +25,7 @@ wheels/
 *.egg
 /package
 /temp
+/data
 MANIFEST
 
 # PyInstaller
