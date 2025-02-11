@@ -11,14 +11,20 @@ def load_data(path, feature: str = None):
     Load data from jsonl file.
 
     :param path: input file path, jsonl format.
-    :param feature:  Filter samples with column `source` in the NuminaMath dataset, e.g. 'aops_forum', 'olympiads', 'amc_aime', ...
+    :param feature:  Filter samples with column `source` in the NuminaMath dataset,
+        such as 'aops_forum', 'olympiads', 'amc_aime', ...
         default is None, which means no filter.
     :return: list of sample dict
     """
     return jsonl_to_list(path, feature)
 
 
-def process_numina_data(api_client:OpenaiAPI, in_file: str, out_file: str, feature: str = None, batch_size: int = 256, max_workers: int = 8):
+def process_numina_data(api_client:OpenaiAPI,
+                        in_file: str,
+                        out_file: str,
+                        feature: str = None,
+                        batch_size: int = 256,
+                        max_workers: int = 8):
 
     if not api_client:
         raise ValueError('API client must be provided.')
@@ -60,11 +66,12 @@ def process_numina_data(api_client:OpenaiAPI, in_file: str, out_file: str, featu
         print(f'>>Cumulative time cost: {time.time() - t1}')
 
 
-
 if __name__ == '__main__':
 
-    # Example: Distill the reasoning process for the Numina Math dataset using DeepSeek-R1 model on Alibaba cloud Bailian LLMs platform.
-    # Reference: https://www.aliyun.com/product/bailian
+    # Example: Distill the reasoning process for the Numina Math dataset
+    # Here we use DeepSeek-R1 model API offered by DashScope
+    # see https://www.aliyun.com/product/bailian
+    # Other compatible API may be used
 
     # See https://modelscope.cn/datasets/modelscope/MathR to get the MathR dataset.
     numina_input_file = 'YOUR_NUMINA_MATH_DATASET.jsonl'
@@ -75,7 +82,7 @@ if __name__ == '__main__':
     api_key = 'YOUR_API_KEY'
 
     client = OpenaiAPI(
-        model='deepseek-r1',  # or 'deepseek-r1-distill-qwen-32b'
+        model='deepseek-r1',  # or other model such as 'deepseek-r1-distill-qwen-32b'
         base_url=base_url,
         api_key=api_key,
         stream=True,
@@ -85,7 +92,7 @@ if __name__ == '__main__':
         client,
         in_file=numina_input_file,
         out_file=numina_conversations_out,
-        # filter by `source` column,
-        # e.g. 'aops_forum', 'olympiads', 'amc_aime', ... default is `None` to select all samples.
+        # filter by `source` column, e.g. 'aops_forum', 'olympiads', 'amc_aime', ...
+        # default to `None` to select all samples.
         feature='aops_forum'
     )

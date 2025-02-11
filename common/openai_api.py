@@ -21,9 +21,9 @@ class OpenaiAPI(object):
 
     def predict(self, prompt: str):
         """
-        Call OpenAI API to get the completion of the prompt
+        Call a reasoning model through an OpenAI-compatible API to get output
 
-        :param prompt: prompt for the question
+        :param prompt: input prompt
         :return:
             response: dict, {'reasoning_content': str, 'content': str, 'usage': dict}
         """
@@ -36,7 +36,6 @@ class OpenaiAPI(object):
         completion = self.client.chat.completions.create(
             model=self.model,
             messages=[
-                # {'role': 'system', 'content': get_system_prompt()},
                 {
                     'role': 'user',
                     'content': prompt
