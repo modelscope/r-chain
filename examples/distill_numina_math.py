@@ -66,6 +66,7 @@ if __name__ == '__main__':
     # Example: Distill the reasoning process for the Numina Math dataset using DeepSeek-R1 model on Alibaba cloud Bailian LLMs platform.
     # Reference: https://www.aliyun.com/product/bailian
 
+    # See https://modelscope.cn/datasets/modelscope/MathR to get the MathR dataset.
     numina_input_file = 'YOUR_NUMINA_MATH_DATASET.jsonl'
     numina_conversations_out = 'results/YOUR_NUMINA_MATH_DATASET_deepseek_r1_results.jsonl'
     # You may use any OpenAI-API compatible service
