@@ -2,6 +2,7 @@ import os
 import time
 
 from common.file_util import dump_jsonl_data, jsonl_to_list
+from common.openai_api import OpenaiAPI
 from math_distillation.process_numina_math import NuminaMath
 
 
@@ -17,10 +18,10 @@ def load_data(path, feature: str = None):
     return jsonl_to_list(path, feature)
 
 
-def process_numina_data(config_d: dict, in_file: str, out_file: str, feature: str = None, batch_size: int = 256):
+def process_numina_data(api_client:OpenaiAPI, in_file: str, out_file: str, feature: str = None, batch_size: int = 256, max_workers: int = 8):
 
-    if not config_d:
-        raise ValueError('config must be provided.')
+    if not api_client:
+        raise ValueError('API client must be provided.')
 
     numina_data_list = load_data(in_file, feature)
 
@@ -44,8 +45,7 @@ def process_numina_data(config_d: dict, in_file: str, out_file: str, feature: st
     del numina_data_list
 
     # Initialize the NuminaMath process
-    max_workers: int = config_d.pop('max_workers', 8)
-    numina_math = NuminaMath(**config_d)
+    numina_math = NuminaMath(api_client)
 
     t1 = time.time()
     for idx, batch_list in enumerate(batches):
@@ -76,4 +76,21 @@ if __name__ == '__main__':
 
     numina_input_file = 'YOUR_NUMINA_MATH_DATASET.jsonl'
     numina_conversations_out = 'results/YOUR_NUMINA_MATH_DATASET_deepseek_r1_results.jsonl'
+    # You may use any OpenAI-API compatible service
+    base_url = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+    # you may set the api_key here or use environment variable `OPENAI_API_KEY`
+    api_key = 'YOUR_API_KEY'
 
+    client = OpenaiAPI(
+        model='deepseek-r1',
+        base_url=base_url,
+        api_key=api_key,
+        stream=True,
+    )
+
+    process_numina_data(
+        client,
+        in_file=numina_input_file,
+        out_file=numina_conversations_out,
+        feature='aops_forum'
+    )
