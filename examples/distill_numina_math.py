@@ -65,14 +65,6 @@ if __name__ == '__main__':
 
     # Example: Distill the reasoning process for the Numina Math dataset using DeepSeek-R1 model on Alibaba cloud Bailian LLMs platform.
     # Reference: https://www.aliyun.com/product/bailian
-    distill_config = dict(
-        model='deepseek-r1',    # deepseek-r1-distill-qwen-32b, deepseek-r1
-        base_url='https://dashscope.aliyuncs.com/compatible-mode/v1',
-        # Set your bailian api key here or use environment variable `OPENAI_API_KEY`
-        api_key='YOUR_BAILIAN_API_KEY',
-        stream=True,
-        max_workers=8,
-    )
 
     numina_input_file = 'YOUR_NUMINA_MATH_DATASET.jsonl'
     numina_conversations_out = 'results/YOUR_NUMINA_MATH_DATASET_deepseek_r1_results.jsonl'
@@ -82,7 +74,7 @@ if __name__ == '__main__':
     api_key = 'YOUR_API_KEY'
 
     client = OpenaiAPI(
-        model='deepseek-r1',
+        model='deepseek-r1',  # or 'deepseek-r1-distill-qwen-32b'
         base_url=base_url,
         api_key=api_key,
         stream=True,
@@ -92,5 +84,7 @@ if __name__ == '__main__':
         client,
         in_file=numina_input_file,
         out_file=numina_conversations_out,
+        # filter by `source` column,
+        # e.g. 'aops_forum', 'olympiads', 'amc_aime', ... default is `None` to select all samples.
         feature='aops_forum'
     )
