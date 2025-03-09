@@ -32,8 +32,8 @@ bash examples/evaluation_scripts/deploy_MathR-Distill-7B.sh
 ```
 This facilitates model evaluation later.
 ##### Evaluation：
-The modle may be evaluated with [evalscope](https://github.com/modelscope/evalscope.git) with the following script:
+The model may be evaluated with [evalscope](https://github.com/modelscope/evalscope.git) with the following script:
 ```
 python examples/evaluation_scripts/eval_MathR_Distill_7B.py
 ```
-By default it evaulates on MATH-500 and GPQA-Diamond benchmarks, wiht evaluation metric being `Pass@1`. Each sample is generated five times and the result is the average of these five attempts.
+By default it evaulates on MATH-500 and GPQA-Diamond benchmarks, with evaluation metric being `Pass@1`. Each sample is generated five times and the result is the average of these five attempts.
